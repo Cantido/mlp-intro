@@ -1,67 +1,72 @@
 #include <stdio.h>
 #include <math.h>
 
-#define MAX_NODES 10  /* maximum nodes -per layer- */
-
-/* START data structure functions */
-
-typedef struct neuron{
-	struct neuron* incoming[MAX_NODES];
-	struct neuron* outgoing[MAX_NODES];
-	float weight[MAX_NODES];
-	float net;
-} neuron;
-
-void link_neuron(neuron* high, neuron* low, int highs_depth, int lows_depth){
-	high.outgoing[lows_depth] = low;
-	low.incoming[highs_depth] = high;
-}
-
-void link_layer(neuron* high, neuron* low, int n_high, int n_low){
-
-	/* Links each node in high with every node in low */
-
-	for(short i = 0; i < MAX_NODES; i++){
-		for(short j = 0; j < MAX_NODES; j++){
-			if(i < n_high && j < n_low){
-				link_neuron(high[i], low[j], i, j);
-			}
-			else{
-				high[i].outgoing[j] = NULL;
-				low[j].incoming[i] = NULL;
-			}
-		}
-	}
-}
-
-neuron* build_network(int n_input_nodes, int n_hidden_nodes, int n_output_nodes){
-	if(n_input_nodes > MAX_NODES || n_hidden_nodes > MAX_NODES || n_output_nodes > MAX_NODES){
-		return NULL;
-	}
-
-	static neuron input[MAX_NODES];
-	static neuron hidden[MAX_NODES];
-	static neuron output[MAX_NODES];
-
-	static neuron* layer[3] = {input, hidden, output};
-
-	link_layer(input, hidden, n_input_nodes, n_hidden_nodes);
-
-	link_layer(hidden, output, n_hidden_nodes, n_output_nodes);
-
-	return layer;
-}
-
-/* END data structure functions */
+#define LEARNING_RATE .5
 
 /* START neural network computational functions */
 
-float sigmoid(float x){
+double sigmoid(double x){
 	return (1 / (1 + pow(x, M_E)));
 }
+
+double sigmoid_deriv(double x){
+	return ( x * (1 - x));
+}
+
 
 /* END neural network computational functions */
 
 int main(){
+
+	/* weights:
+	 * 	[0] = input node's weight on the initial input
+	 * 	[1,2] = the two hidden nodes' weights on the input node's output
+	 * 	[3,4] = the one output node's weights on the two hidden nodes' output
+	 */
+
+	double weight[5] = 0;
+
+	/* results array:
+	 * 	[0] result of input node's computation
+	 * 	[1,2] result of hidden layer node computation
+	 * 	[3] result of output layer's computation
+	 */
+
+	double results[4] = 0;
+
+	double desired[21];
+	double input[21];
+
+	double x = -1.0;
+	for(short i = 0, x = -1.0; i < 21; i++, x + 0.1){
+		input[i] = x;
+		desired[i] = pow(x, 2) + 1;
+	}
+
+	for(int i = 0; i < 500; i++){ // Completion of one loop: full iteration through dataset
+		for(int j = 0; j < 21; j++){
+
+			/* first layer: input vector x weight -> sigmoid */
+
+			results[0] = sigmoid(input[j] * weight[0]);
+
+			/* for two nodes: input vector x weight -> sigmoid */
+
+			results[1] = sigmoid(results[0] * weight[1]);
+			results[2] = sigmoid(results[0] * weight[2]);
+
+			/* for final node: weight * sum both outputs -> sigmoid */
+
+			results [3] = sigmoid((results[1] * weight[3]) + (results[2] * weight[4]));
+
+			/* back-propagate */
+
+
+
+		}
+
+	}
+
+
 	return 0;
 }
