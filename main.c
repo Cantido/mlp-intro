@@ -26,13 +26,32 @@ int main(){
 
 	double weight[5] = 0;
 
-	/* results array:
-	 * 	[0] result of input node's computation
-	 * 	[1,2] result of hidden layer node computation
-	 * 	[3] result of output layer's computation
+	/* net array:
+	 * 	[0] weighted sum input to input node
+	 * 	[1,2] weighted sum input to hidden nodes
+	 * 	[3] weighted sum input to output node
 	 */
 
-	double results[4] = 0;
+	double net[4] = 0;
+	
+	
+	/* output array:
+	 * 	[0] sigmoid output of input node
+	 * 	[1,2] sigmoid output of hidden nodes
+	 * 	[3] sigmoid output of output node (final output of network)
+	 */
+
+	double net[4] = 0;
+	
+	/* error array:
+	 *  [0] local error of input layer
+	 *  [1,2] local error of hidden layer nodes
+	 *  [3] local error of output layer
+	 *
+	 * This array -will- be filled backwards, from 3 to 0
+	 */
+	 
+	 double error[4] = 0;
 
 	double desired[21];
 	double input[21];
@@ -48,20 +67,30 @@ int main(){
 
 			/* first layer: input vector x weight -> sigmoid */
 
-			results[0] = sigmoid(input[j] * weight[0]);
+			net[0] = input[j] * weight[0];
+			results[0] = sigmoid(net[0]);
 
 			/* for two nodes: input vector x weight -> sigmoid */
 
-			results[1] = sigmoid(results[0] * weight[1]);
-			results[2] = sigmoid(results[0] * weight[2]);
+			net[1] = results[0] * weight[1];
+			net[2] = results[0] * weight[2];
+			
+			results[1] = sigmoid(net[1]);
+			results[2] = sigmoid(net[2]);
 
 			/* for final node: weight * sum both outputs -> sigmoid */
 
-			results [3] = sigmoid((results[1] * weight[3]) + (results[2] * weight[4]));
+			// work in progress
 
 			/* back-propagate */
-
-
+			/* compute output layer local error */
+			
+			error[3] = (input[j] - results[3]) * sigmoid_deriv(results[3]);
+			
+			/* compute hidden layer local error */
+			
+			
+			/* compute input layer local error */
 
 		}
 
