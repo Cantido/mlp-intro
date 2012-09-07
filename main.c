@@ -80,17 +80,25 @@ int main(){
 
 			/* for final node: weight * sum both outputs -> sigmoid */
 
-			// work in progress
-
+			net[3] = results[2] * weight[3] + 
+			
 			/* back-propagate */
 			/* compute output layer local error */
 			
-			error[3] = (input[j] - results[3]) * sigmoid_deriv(results[3]);
+			error[3] = (desired[j] - results[3]) * sigmoid_deriv(results[3]);
 			
 			/* compute hidden layer local error */
 			
+			error[1] = sigmoid_deriv(net[1]) * error [3] * weight[3];
+			error[2] = sigmoid_deriv(net[2]) * error [3] * weight[4];
 			
 			/* compute input layer local error */
+			
+			error[0] = sigmoid_deriv(net[0]) * ((error[1] * weight[1]) + (error[2] * weight[2]));
+			
+			/* update weights (i'll go from input layer to output layer) */
+			
+			
 
 		}
 
