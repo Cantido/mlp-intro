@@ -10,7 +10,7 @@ double func(double x){
 }
 
 double func_p(double x){
-	return f(x)(1-f(x));
+	return func(x)(1-func(x));
 }
 
 
