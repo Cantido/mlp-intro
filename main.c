@@ -10,7 +10,7 @@ double func(double x){
 }
 
 double func_p(double x){
-	return func(x)(1-func(x));
+	return func(x)*(1-func(x));
 }
 
 
@@ -24,14 +24,14 @@ int main(){
 	 * 	[3] weighted sum input to output node (NOT FINAL OUTPUT OF NETWORK)
 	 */
 
-	double n[4] = 0;
+	double n[4];
 
 	/* weights w:
 	 * 	[0,1] = connection between input & first hidden node
 	 * 	[2,3] = connection between input & second hidden node
 	 */
 
-	double w[4] = 0;
+	double w[4];
 	
 	/* output array:
 	 * 	[0] sigmoid output of input node
@@ -39,7 +39,7 @@ int main(){
 	 * 	[3] sigmoid output of output node (final output of network)
 	 */
 
-	double y[4] = 0;
+	double y[4];
 	
 	/* error array:
 	 *  [0] dummy variable for index. or the result of messy code. DO NOT USE.
@@ -49,7 +49,7 @@ int main(){
 	 * This array -will- be filled backwards, from 3 to 0
 	 */
 	 
-	double l_e[4] = 0;
+	double l_e[4];
 
 	/* create input/output array */
 
@@ -100,8 +100,8 @@ int main(){
 
 			/* compute local error of hidden layer */
 
-			l_e[1] = y[1](1 - y[1]) * l_e[3] * w[2];
-			l_e[2] = y[2](1 = y[1]) * l_e[3] * w[3];
+			l_e[1] = y[1] * (1 - y[1]) * l_e[3] * w[2];
+			l_e[2] = y[2] * (1 - y[1]) * l_e[3] * w[3];
 
 			/* there is no input layer local error term */
 
