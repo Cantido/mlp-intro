@@ -5,11 +5,11 @@
 
 /* START neural network computational functions */
 
-double f(double x){
+double func(double x){
 	return (1 / (1 + pow(x, M_E)));
 }
 
-double f_p(double x){
+double func_p(double x){
 	return f(x)(1-f(x));
 }
 
@@ -74,29 +74,29 @@ int main(){
 			/* input layer computation */
 
 			n[0] = input[j];
-			y[0] = f(n[0]);
+			y[0] = func(n[0]);
 
 			/* hidden layer computation */
 
 			n[1] = w[0] * y[0];
 			n[2] = w[1] * y[0];
 
-			y[1] = f(n[1]);
-			y[2] = f(n[2]);
+			y[1] = func(n[1]);
+			y[2] = func(n[2]);
 
 			/* output layer computation */
 
 			n[3] = (w[2] * y[1]) + (w[3] * y[2]);
 
-			y[3] = f(n[3]);
+			y[3] = func(n[3]);
 
-			/* the output of the network is now stored in y[3]
+			/* the output of the network is now stored in y[3] */
 
 			/* back propagating now */
 
 			/* compute error of output layer */
 
-			l_e[3] = (desired[j] - y[3]) * f_p(n[3]);
+			l_e[3] = (desired[j] - y[3]) * func_p(n[3]);
 
 			/* compute local error of hidden layer */
 
